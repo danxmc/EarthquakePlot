@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-// City Model
-//const Action = require('../../models/City');
-
 // @route   GET api/locations
 // @desc    Get All locations
 // @access  Public
