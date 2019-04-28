@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import { NavLink as RRNavLink } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container } from 'reactstrap';
 
-export default class AppNavbar extends Component {
+class AppNavbar extends Component {
     state = {
         collapsed: false
     }
@@ -22,10 +23,10 @@ export default class AppNavbar extends Component {
                 <Collapse isOpen={ !this.state.collapsed } navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink href="/">Plot</NavLink>
+                            <NavLink to="/" exact tag={ RRNavLink }>Plot</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/top10">Last Year Top 10 Earthquakes</NavLink>
+                            <NavLink to="/top10" tag={ RRNavLink }>Last Year Top 10 Earthquakes</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
@@ -35,3 +36,5 @@ export default class AppNavbar extends Component {
     )
   }
 }
+
+export default AppNavbar;
