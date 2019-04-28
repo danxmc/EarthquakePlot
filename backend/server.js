@@ -8,6 +8,7 @@ app.use(express.json());
 
 // Use Routes
 app.use('/api/locations', require('./routes/api/locations'));
+app.use('/api/earthquakes', require('./routes/api/earthquakes'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container } from 'reactstrap';
 
@@ -15,7 +15,7 @@ class AppNavbar extends Component {
 
   render() {
     return (
-    <div>
+    <Fragment>
         <Navbar color="dark" dark expand="sm" className="mb-5">
             <Container>
                 <NavbarBrand href="/">EarthquakePlotter</NavbarBrand>
@@ -32,7 +32,7 @@ class AppNavbar extends Component {
                 </Collapse>
             </Container>
         </Navbar>
-    </div>
+    </Fragment>
     )
   }
 }

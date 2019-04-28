@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { connect } from 'react-redux';
+import { postLocation } from '../actions/locationActions';
 
 class LocationForm extends Component {
   
@@ -20,7 +22,7 @@ class LocationForm extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <Container className="mb-3">
             <Row>
                 <Col sm="12" md={{ size: 6, offset: 3 }}>
@@ -34,9 +36,13 @@ class LocationForm extends Component {
                 </Col>
             </Row>
         </Container>
-      </div>
+      </Fragment>
     )
   }
 }
 
-export default LocationForm;
+const mapStateToProps = (state) => ({
+
+});
+
+export default connect(mapStateToProps, { postLocation })(LocationForm);

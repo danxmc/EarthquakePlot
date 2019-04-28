@@ -5,20 +5,24 @@ import AppNavbar from './components/AppNavbar';
 import EarthquakesList from './components/EarthquakesList';
 import Plotter from "./components/Plotter";
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div className="App">
-          <AppNavbar />
-          <Route exact path="/" component={Plotter} />
-          <Route path="/top10" component={EarthquakesList} />
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <div className="App">
+            <AppNavbar />
+            <Route exact path="/" component={Plotter} />
+            <Route path="/top10" component={EarthquakesList} />
+          </div>
+        </Router>
+      </Provider>
     );
-
   }
 }
 
