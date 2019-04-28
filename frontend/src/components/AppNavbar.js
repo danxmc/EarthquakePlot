@@ -23,7 +23,7 @@ class AppNavbar extends Component {
                 <Collapse isOpen={ !this.state.collapsed } navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink to="/" exact tag={ RRNavLink }>Plot</NavLink>
+                            <NavLink to="/" exact tag={ RRNavLink }>Plotter</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink to="/top10" tag={ RRNavLink }>Last Year Top 10 Earthquakes</NavLink>

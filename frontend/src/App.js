@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import AppNavbar from './components/AppNavbar';
 import EarthquakesList from './components/EarthquakesList';
-import Plot from "./components/Plot";
+import Plotter from "./components/Plotter";
 
 import './App.css';
 
@@ -13,7 +13,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <AppNavbar />
-          <Route exact path="/" component={Plot} />
+          <Route exact path="/" component={Plotter} />
           <Route path="/top10" component={EarthquakesList} />
         </div>
       </Router>
