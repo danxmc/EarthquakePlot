@@ -2,53 +2,18 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-// @route   GET api/locations
-// @desc    Get All locations
-// @access  Public
-router.get('/', (req, res) => {
-    // Bounding box for the whole world
-    const north = 90;
-    const south = -90;
-    const east = 180;
-    const west = -180;
-
-    let count = 0;
-
-    // Get the earthquakes from the location's bounding box
-    axios.get(`http://api.geonames.org/earthquakesJSON?north=${north}&south=${south}&east=${east}&west=${west}&maxRows=500&username=danx`)
-    .then(earthquakeRes => {
-        // Set the date to a year from now
-        d = new Date();
-        d.setFullYear(d.getFullYear() - 1);
-
-        // Filter only earthquakes that happened since last year
-        let earthquakes = earthquakeRes.data.earthquakes.filter(earthquake => {
-            const earthquakeDate = new Date(earthquake.datetime);
-            if (earthquakeDate >= d && count < 10) {
-                count++;
-                return earthquake;
-            }
-        });
-
-        res.json({ earthquakes });
-    })
-    .catch(err => {
-        console.error(err);
-    });
-
-    //res.send("Hello");
-});
-
 // @route   POST api/locations
 // @desc    Search the location
 // @access  Public
 router.post('/', (req, res) => {
     const degKm = 111.12;
-    const x = 25 / 2;
+    const x = 500 / 2;
 
-    let location = req.body.location;
+    let location = encodeURI(req.body.location);
     let lat, long;
     let north, south, east, west;
+
+    let count = 0;
 
     // Get the latitud and longitud of the location
     axios.get(`http://api.geonames.org/searchJSON?q=${location}&maxRows=1&username=danx`)
@@ -69,13 +34,31 @@ router.post('/', (req, res) => {
         east = parseFloat(long) + ((x / degKm) / Math.cos(lat));
         west = long - ((x / degKm) / Math.cos(lat));
 
-        console.log(north + " " + south + ", " + east + " " + west);
+        //console.log(`bbox(${west}, ${south}, ${east}, ${north})`);
+        //console.log(north + " " + south + ", " + east + " " + west);
 
         // Get the earthquakes from the location's bounding box
-        axios.get(`http://api.geonames.org/earthquakesJSON?north=${north}&south=${south}&east=${east}&west=${west}&username=danx`)
+        axios.get(`http://api.geonames.org/earthquakesJSON?north=${north}&south=${south}&east=${east}&west=${west}&maxRows=500&username=danx`)
         .then(earthquakeRes => {
-            console.log(earthquakeRes.data.earthquakes);
-            res.json({ earthquakes: earthquakeRes.data.earthquakes });
+            // Check earthquake's lat & lng is whithin bounding box coordinates. Error with GeoNames API
+            // Check http://api.geonames.org/earthquakesJSON?north=44.1&south=-9.9&east=-22.4&west=55.2&username=demo
+            // http://api.geonames.org/earthquakesJSON?north=1&south=-1&east=-1&west=1&username=abhijeetmitra
+
+            let earthquakes = earthquakeRes.data.earthquakes.filter(earthquake => {
+                if (earthquake.lat <= north + 15 && earthquake.lat >= south - 15 && earthquake.lng <= east + 15 && earthquake.lng >= west - 15 && count < 10) {
+                    count++;
+                    return earthquake;
+                }
+            });
+
+            res.json({
+                location: {
+                    lat,
+                    long
+                },
+                earthquakes,
+                //earthquakes: earthquakeRes.data.earthquakes
+            });
         })
         .catch(err => {
             console.error(err);
@@ -85,31 +68,6 @@ router.post('/', (req, res) => {
         // Location not found
         console.error(err);
     });
-    
-    //res.status(500).send('Not found');
-    /*newAction.save((err, action) => {
-        action
-        .populate('User', 'name email role')
-        .execPopulate()
-        .then(action => res.json(action))
-        .catch(err => res.status(500).json({
-            success: false
-        }));
-    });*/
 });
-
-// @route   DELETE api/actions/:id
-// @desc    Delete An Action
-// @access  Private
-/*router.delete('/:id', auth, (req, res) => {
-    Action.findById(req.params.id)
-    .then(action => action.remove()
-    .then(() => res.json({
-        success: true
-    })))
-    .catch(err => res.status(404).json({
-        success: false
-    }));
-});*/
 
 module.exports = router;

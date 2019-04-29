@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import LocationForm from "./LocationForm";
 import LocationsMap from "./LocationsMap";
-
 
 class Plotter extends Component {
   render() {
     return (
-    <div>
+    <Fragment>
       <LocationForm />
       <LocationsMap />
-    </div>
+    </Fragment>
     )
   }
 }

@@ -1,4 +1,4 @@
-import { GET_EARTHQUAKES } from '../actions/types';
+import { GET_EARTHQUAKES, EARTHQUAKES_LOADING } from '../actions/types';
 
 const initialState = {
     earthquakes: [],
@@ -10,9 +10,14 @@ export default function (state = initialState, action) {
         case GET_EARTHQUAKES:
             return {
                 ...state,
-                earthquakes: action.payload,
+                earthquakes: action.payload.earthquakes,
                 loading: false
             };
+        case EARTHQUAKES_LOADING:
+            return {
+                ...state,
+                loading: true
+            }
         default:
             return state;
     }

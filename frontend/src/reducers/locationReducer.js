@@ -1,8 +1,8 @@
-import { POST_LOCATION } from '../actions/types';
+import { POST_LOCATION, LOCATIONS_LOADING } from '../actions/types';
 
 const initialState = {
-    location: "",
-    earthquake: [],
+    location: {},
+    earthquakes: [],
     loading: false
 }
 
@@ -11,13 +11,15 @@ export default function (state = initialState, action) {
         case POST_LOCATION:
             return {
                 ...state,
-                location: [action.payload, ...state.actions]
+                earthquakes: action.payload.earthquakes,
+                location: action.payload.location,
+                loading: false
             };
-        /*case LOCATIONS_LOADING:
+        case LOCATIONS_LOADING:
             return {
                 ...state,
                 loading: true
-            }*/
+            }
         default:
             return state;
     }

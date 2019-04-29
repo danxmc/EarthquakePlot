@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { POST_LOCATION } from './types';
+import { POST_LOCATION, LOCATIONS_LOADING } from './types';
 
-export const postLocation = action => (dispatch, getState) => {
+export const postLocation = action => (dispatch) => {
+    dispatch(setLocationsLoading());
     axios
-    .post('/api/actions', action)
+    .post('/api/locations', action)
     .then(res => {
         dispatch({
             type: POST_LOCATION,
@@ -16,9 +17,9 @@ export const postLocation = action => (dispatch, getState) => {
         );*/
     });
 }
-/*
-export const setActionsLoading = () => {
+
+export const setLocationsLoading = () => {
     return {
-        type: ACTIONS_LOADING
+        type: LOCATIONS_LOADING
     }
-}*/
+}
