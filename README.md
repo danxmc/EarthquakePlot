@@ -15,4 +15,8 @@ The frontend is served using React, and the backend in Node/Express.
 ## Run with docker-compose
 1. Navigate to the root of the project
 2. Run `docker-compose build`
-3. Run `docker-compose up` 
+3. Run `docker-compose up`
+
+## Run with docker-compose for development
+1. Navigate to the root of the project
+2. Run `docker-compose -f dev-docker-compose.yml up --build`

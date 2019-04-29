@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  ##########################
+  ### SETUP SERVER CONTAINER
+  ##########################
+  server:
+    # Tell docker what file to build the server from
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    # The ports to expose
+    expose:
+      - 5000
+    # Environment variables
+    environment:
+      - PORT=5000
+      - DEBUG=worker:*
+      - NODE_ENV=development
+    # Port mapping
+    ports:
+      - 5000:5000
+    # Volumes to mount
+    volumes:
+      - ./backend:/app/server
+    # Run command
+    # Nodemon for hot reloading (-L flag required for polling in Docker)
+    command: nodemon -L src/server.js
+    # Restart action
+    restart: always
+  ##########################
+  ### SETUP CLIENT CONTAINER
+  ##########################
+  client:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-dev
+    environment:
+      - REACT_APP_PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/app/client/src
+      - ./frontend/public:/app/client/public
+    links:
+      - server
+    command: npm run start
+    restart: always

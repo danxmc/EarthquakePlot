@@ -1,29 +1,25 @@
-version: '3.4'
+version: "3"
+
 services:
-  react-app:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  ##########################
+  ### SETUP SERVER CONTAINER
+  ##########################
+  server:
+    build: ./backend
     environment:
-      - NODE_ENV=production
-    command: npm run start
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
     ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/client
+      - ${PORT}:${PORT}
+    command: node server.js
     restart: always
-    links:
-      - api
-  
-  api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=production
-    command: npm run start
+  ##########################
+  ### SETUP CLIENT CONTAINER
+  ##########################
+  client:
+    build: ./frontend
     ports:
-      - 5000:5000
-    volumes:
-      - ./backend:/server
+      - 80:80
+    links:
+      - server
     restart: always

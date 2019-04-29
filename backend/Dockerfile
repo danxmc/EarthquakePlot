@@ -1,11 +1,24 @@
-FROM mhart/alpine-node:10.15.3
+FROM node:10.15.3-alpine as builder
 
-RUN mkdir /server
-WORKDIR /server
-COPY ["package.json", "package-lock.json*", "./"]
+RUN mkdir -p /app/server
+WORKDIR /app/server
 
-RUN npm install --silent && mv node_modules ../
+COPY package.json /app/server/
+#COPY yarn* /app/server/
 
-COPY . /server
+# Install dependencies
+RUN yarn install --production=true
 
-EXPOSE 5000
+# Copy the server files over
+COPY . /app/server/
+
+FROM node:10.15.3-alpine
+
+# Create and set the working directory
+RUN mkdir -p /app/server
+WORKDIR /app/server
+
+# Copy the server from the build container
+COPY --from=builder /app/server /app/server
+
+CMD ["node", "server.js"]
